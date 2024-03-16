@@ -4,4 +4,6 @@
 output/
 build/
 dist/
-.vx/
+.vs/
+gamepad_emulator.pyproj
+gamepad_emulator.sln
