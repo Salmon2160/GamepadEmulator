@@ -6,6 +6,7 @@ import schedule
 from gamepad.controller_config import ControllerConfig
 from gamepad.controller_input import ControllerVirtualInput
 from function.utils import *
+
     
 def ReadCSV(path):
     if not os.path.isfile(path):
@@ -68,17 +69,16 @@ class HeadReader:
     def reset(self):
         self.pos = 0
 
-def Replay(reshape_path, shared_states):
-    reshape_config = LoadYaml(reshape_path)
+def Replay(reshape_config, shared_states):
     command_df = ReadCSV(reshape_config["reshape_path"])
     
-    controller_config = ControllerConfig(reshape_config["controller_type"])
-    virtual_input = ControllerVirtualInput(reshape_config["controller_type"])
+    virtual_input = reshape_config["virtual_input"]
+    controller_config = ControllerConfig(virtual_input.controller_type)
     
     time.sleep(3)
     
     FPS = reshape_config["fps"] * 4
-    frame_count = FrameCount()   
+    frame_count = FrameCount()
     head_reader = HeadReader(len(command_df))
     
     schedule.every(1 / FPS).seconds.do(

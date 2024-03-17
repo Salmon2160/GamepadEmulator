@@ -3,11 +3,11 @@
 block_cipher = None
 
 a = Analysis(
-    ['gamepad_recorder.py'],
+    ['gamepad_emulator.py'],
     pathex=[],
     binaries=[
-        (r"C:\Users\slime\anaconda3\envs\macro_env\python310.dll", '.'),
-        (r"C:\Users\slime\anaconda3\envs\gamepad_env\Lib\site-packages\vgamepad\win\vigem\client\x64\ViGEmClient.dll", '.'),
+        (r"C:\Users\ryoichi\anaconda3\envs\macro_env\python310.dll", '.'),
+        (r"C:\Users\ryoichi\anaconda3\envs\macro_env\Lib\site-packages\vgamepad\win\vigem\client\x64\ViGEmClient.dll", '.'),
     ],
     datas=[],
     hiddenimports=[],
