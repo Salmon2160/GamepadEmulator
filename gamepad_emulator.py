@@ -5,7 +5,6 @@
 from os import environ
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
-from genericpath import isfile
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
