@@ -7,3 +7,4 @@ dist/
 .vs/
 gamepad_emulator.pyproj
 gamepad_emulator.sln
+setting.yaml

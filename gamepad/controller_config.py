@@ -3,7 +3,7 @@ from .xbox360 import XBOX360_BUTTON, XBOX360_STICK, XBOX360_HAT
 from .direct_input13 import DIRECT_INPUT13_BUTTON, DIRECT_INPUT13_STICK, DIRECT_INPUT13_HAT
 
 CONTROLLER_TYPE_LIST = [
-        "DS4",
+        "DualShock4",
         "XBOX360",
         "DIRECT_INPUT13"
     ]
@@ -17,15 +17,15 @@ class ControllerConfig:
     def __init__(self, controller_type):
         self.controller_type = controller_type
         
-        if controller_type == "DS4":
+        if controller_type == CONTROLLER_TYPE_LIST[0]:
             self.BUTTON = DS4_BUTTON
             self.STICK = DS4_STICK
             self.HAT = None
-        elif controller_type == "XBOX360":
+        elif controller_type == CONTROLLER_TYPE_LIST[1]:
             self.BUTTON = XBOX360_BUTTON
             self.STICK = XBOX360_STICK
             self.HAT = XBOX360_HAT
-        elif controller_type == "DIRECT_INPUT13":
+        elif controller_type == CONTROLLER_TYPE_LIST[2]:
             self.BUTTON = DIRECT_INPUT13_BUTTON
             self.STICK = DIRECT_INPUT13_STICK
             self.HAT = DIRECT_INPUT13_HAT

@@ -11,8 +11,8 @@ def ReadCSV(path):
     df = pd.read_csv(path, dtype=object)
     return df
 
-def AppendDf(df, append_dic):
-    for key, value in append_dic.items():
+def AppendDf(df, append_dict):
+    for key, value in append_dict.items():
         df.loc[(df[key].isnull() == False).sum(), key] = value
 
 # 時刻、ボタン名、引数０、引数１
@@ -44,8 +44,8 @@ def ConvertCommand(reshape_config):
                 continue
             
             reshape_list = [list(record)[-1], name, new_value, 0]
-            reshape_dic = dict(zip(reshape_header, reshape_list))
-            AppendDf(reshape_df, reshape_dic)
+            reshape_dict = dict(zip(reshape_header, reshape_list))
+            AppendDf(reshape_df, reshape_dict)
             old_state[idx] = new_value
         
         idx = 0
@@ -75,8 +75,8 @@ def ConvertCommand(reshape_config):
                     new_value_list += [0.0]
                 
                 reshape_list = [list(record)[-1], name_list[0], *new_value_list]
-                reshape_dic = dict(zip(reshape_header, reshape_list))
-                AppendDf(reshape_df, reshape_dic)
+                reshape_dict = dict(zip(reshape_header, reshape_list))
+                AppendDf(reshape_df, reshape_dict)
                 for i in range(size):
                     old_state[offset + idx + i] = new_value_list[i]
                     
@@ -93,8 +93,8 @@ def ConvertCommand(reshape_config):
                 continue
             
             reshape_list = [list(record)[-1], name, new_value, 0]
-            reshape_dic = dict(zip(reshape_header, reshape_list))
-            AppendDf(reshape_df, reshape_dic)
+            reshape_dict = dict(zip(reshape_header, reshape_list))
+            AppendDf(reshape_df, reshape_dict)
             old_state[offset + idx] = new_value
                 
     df.to_csv(reshape_config["reshape_path"], index=False)

@@ -8,29 +8,6 @@ from gamepad.controller_config import ControllerConfig
 from function.utils import *
 from function.reshape import Reshape
     
-def get_joy_index():
-    try:
-        pygame.init()
-        joy_num = pygame.joystick.get_count()
-        joy_names = []
-        for i in range(joy_num):
-            joy = pygame.joystick.Joystick(i)
-            joy.init()
-            print("["+ str(i) +"] : " + joy.get_name())
-            joy_names += [joy.get_name()]
-            joy.quit()
-    
-        while True:
-            joy_index = input('使用コントローラーを選択（インデックス指定） : ')
-            if joy_index.isdecimal() and (0 <= int(joy_index) < joy_num):
-                joy_index = int(joy_index)
-                break
-            print("無効なコントローラーを指定しています") 
-        pygame.quit()
-        return joy_index, joy_names[joy_index]
-    except KeyboardInterrupt:
-        joy.quit()
-        return None, None
     
 def MakeCSV(path, header):
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -77,7 +54,7 @@ def RecordInput(joy, frame_count, config, record_df):
                     valueY = joy.get_axis(idx + 1)
                     dist = CalcDist(valueX, valueY)
                     threshStick = 0.15
-                    if dist > threshStick:
+                    if dist >= threshStick:
                         result_list[btn_num + idx] = valueX
                         result_list[btn_num + idx + 1] = valueY
                         stk0 = controller_config.GetStickName(idx)                            
@@ -88,7 +65,7 @@ def RecordInput(joy, frame_count, config, record_df):
                 elif size == 1:
                     value = joy.get_axis(idx)
                     threshTriger = -0.95
-                    if value > threshTriger: 
+                    if value >= threshTriger:
                         result_list[btn_num + idx] = value
                         stk = controller_config.GetStickName(idx)
                         print(stk + " : " + str(value))
@@ -118,8 +95,8 @@ class RecordDf():
        
     def Append(self, append_list):
         header = self.df.columns
-        append_dic = dict(zip(header, [[item] for item in append_list]))
-        append_df = pd.DataFrame(append_dic, dtype=object)
+        append_dict = dict(zip(header, [[item] for item in append_list]))
+        append_df = pd.DataFrame(append_dict, dtype=object)
         self.df = pd.concat([self.df, append_df])
 
     def AppendEndRecord(self, init_func, time):
@@ -131,23 +108,22 @@ class RecordDf():
     def GetDf(self):
         return self.df
 
-def Record(config, joy_index, shared_states):        
-    controller_config = ControllerConfig(config["controller_type"])
+def Record(config, joy_index, shared_states):
+    pygame.init()
+    joy = pygame.joystick.Joystick(joy_index)
+    print(joy.get_name())
+    print(joy.get_numbuttons())
+    print(joy.get_numaxes())
+    print(joy.get_numhats())
     
+    frame_count = FrameCount()
+    
+    controller_config = ControllerConfig(config["controller_type"])
     record_path = config[ "record_path"]
     record_df = MakeCSV(record_path, controller_config.GetHeader() + ["時刻"])
     record_df = RecordDf(record_df)
     
     FPS = config["fps"]
-    pygame.init()
-    joy = pygame.joystick.Joystick(joy_index)
-    joy.init()
-    joy_name = joy.get_name()
-            
-    print(joy.get_numbuttons())
-    print(joy.get_numaxes())
-    print(joy.get_numhats())
-    frame_count = FrameCount()
             
     schedule.every(1 / FPS).seconds.do(
         RecordInput, 

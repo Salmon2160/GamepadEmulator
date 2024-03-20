@@ -1,5 +1,5 @@
 import vgamepad as vg
-from .controller_config import ControllerConfig
+from .controller_config import ControllerConfig, CONTROLLER_TYPE_LIST
 from .dual_shok4_input import DS4_Input
 from .xbox_input import XBOX360_Input
 from .direct_input13_input import DIRECT_INPUT13_Input
@@ -12,16 +12,16 @@ class ControllerVirtualInput:
         self.controller_type = controller_type
         self.controller_config = ControllerConfig(controller_type)
         
-        if controller_type == "DS4":
+        if controller_type == CONTROLLER_TYPE_LIST[0]:
             self.gamepad = DS4_Input()
-        elif controller_type == "XBOX360":
+        elif controller_type == CONTROLLER_TYPE_LIST[1]:
             self.gamepad = XBOX360_Input()
-        elif controller_type == "DIRECT_INPUT13":
+        elif controller_type == CONTROLLER_TYPE_LIST[2]:
             self.gamepad = DIRECT_INPUT13_Input()
         else:
             self.gamepad = DS4_Input()
             
-        print(controller_type)
+        print("Create Virtual Controller : " + controller_type)
     
     def InputButton(self, button, is_press = True):
         if self.controller_config.IsValidButtonIndex(button):

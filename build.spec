@@ -25,6 +25,7 @@ a.datas += [
     (r'.\image\movie_icon2.png', '.\image\movie_icon2.png', 'DATA'),
     (r'.\image\stop_icon1.png', '.\image\stop_icon1.png', 'DATA'),
     (r'.\image\play_icon2.png', '.\image\play_icon2.png', 'DATA'),
+    (r'.\image\config_icon.png', '.\image\config_icon.png', 'DATA'),
 ]
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)

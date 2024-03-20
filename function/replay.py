@@ -31,7 +31,7 @@ def ReplayInput(command_df, frame_count, head_reader, controller_config, virtual
         if now_time < int(time):
             break
             
-        print(time + " : " + command + ", (" + arg0 + ", " + arg1 + ")")
+        # print(time + " : " + command + ", (" + arg0 + ", " + arg1 + ")")
         if controller_config.IsValidButtonKey(command):
             btn_idx = controller_config.GetButtonIndex(command)
             is_press = int(arg0) != 0
@@ -46,9 +46,15 @@ def ReplayInput(command_df, frame_count, head_reader, controller_config, virtual
         head_reader.increment()
         virtual_input.Update()
             
-    # print("" + str(frame_count.get_frame()) + " : " + str(frame_count.get_time())[:-3])
-    # print("" + str(frame_count.get_milliseconds()) + " : " + str(frame_count.get_time())[:-3])
+    # print("replay " + str(frame_count.get_frame()) + " : " + str(frame_count.get_time())[:-3])
+    # print("replay " + str(frame_count.get_milliseconds()) + " : " + str(frame_count.get_time())[:-3])
     frame_count.update()
+    
+    if head_reader.is_last():
+        frame_count.reset()
+        head_reader.reset()
+        virtual_input.Reset()
+        virtual_input.Update()
     
 class HeadReader:
     def __init__(self, size):
@@ -68,37 +74,3 @@ class HeadReader:
     
     def reset(self):
         self.pos = 0
-
-def Replay(reshape_config, shared_states):
-    command_df = ReadCSV(reshape_config["reshape_path"])
-    
-    virtual_input = reshape_config["virtual_input"]
-    controller_config = ControllerConfig(virtual_input.controller_type)
-    
-    time.sleep(3)
-    
-    FPS = reshape_config["fps"] * 4
-    frame_count = FrameCount()
-    head_reader = HeadReader(len(command_df))
-    
-    schedule.every(1 / FPS).seconds.do(
-            ReplayInput, 
-            command_df = command_df , 
-            frame_count = frame_count, 
-            head_reader = head_reader, 
-            controller_config = controller_config,
-            virtual_input = virtual_input,
-            )
-    while shared_states[0]:
-        schedule.run_pending()
-        if head_reader.is_last():
-            shared_states[1] += 1
-            # print(frame_count.get_milliseconds())
-            frame_count.reset()
-            head_reader.reset()
-            virtual_input.Reset()
-            virtual_input.Update()
-
-    virtual_input.Reset()
-    virtual_input.Update()
-    schedule.clear()

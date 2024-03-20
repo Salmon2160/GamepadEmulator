@@ -9,6 +9,7 @@ class FrameCount:
         self.frame = 0
         self.dt_old = datetime.datetime.now()
         self.dt_start = copy.deepcopy(self.dt_old)
+        self.old_delta = 0
         
     def update(self):
         self.frame += 1
@@ -26,6 +27,9 @@ class FrameCount:
         self.dt_start = copy.deepcopy(self.dt_old)
         
     def get_milliseconds(self):
+        new = int((datetime.datetime.now() - self.dt_start).total_seconds() *1000)
+        # print("delta : " + str(new - self.old_delta))
+        self.old_delta = new
         return int((datetime.datetime.now() - self.dt_start).total_seconds() *1000)
 
 def InverseDict(d):
@@ -42,7 +46,11 @@ def LoadYaml(path):
     return None
 
 def SaveYaml(path, dic):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+    except:
+        pass
+    
     with open(path, 'w') as file:
             yaml.dump(dic, file)
             
