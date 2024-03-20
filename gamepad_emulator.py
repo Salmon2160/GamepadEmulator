@@ -688,7 +688,7 @@ class MainWindow(Tk):
 def main():
     # メインウィンドウの設定
     main_win = MainWindow()
-    main_win.title("Gamepad Recorder")
+    main_win.title("Gamepad Emulator")
 
     # フレームの設定
     main_frm(master=main_win)
