@@ -374,6 +374,9 @@ class record_setting_win(Toplevel):
         super().__init__(master=master)
         self.make_widget()
 
+        # サイズ固定
+        self.wm_resizable(False, False)
+
     def make_widget(self):
         def _on_closing():  # ウィンドウの右上の✖アイコンから閉じるときの処理（ウィンドウを閉じる処理を書き換える）
             self.destroy()
@@ -453,6 +456,9 @@ class replay_setting_win(Toplevel):
         self.master = master
         super().__init__(master=master)
         self.make_widget()
+        
+        # サイズ固定
+        self.wm_resizable(False, False)
 
     def make_widget(self):
         def _on_closing():  # ウィンドウの右上の✖アイコンから閉じるときの処理（ウィンドウを閉じる処理を書き換える）
@@ -542,6 +548,9 @@ class setting_setting_win(Toplevel):
         self.master = master
         super().__init__(master=master)
         self.make_widget()
+        
+        # サイズ固定
+        self.wm_resizable(False, False)
 
     def make_widget(self):
         def _on_closing():  # ウィンドウの右上の✖アイコンから閉じるときの処理（ウィンドウを閉じる処理を書き換える）
