@@ -147,7 +147,7 @@ class main_frm(Frame):
     def __init__(self, master):
         super().__init__(master=master)
         self.master = master
-        self.grid(column=0, row=0, sticky=(N, S, W, E)) # capture_frmをマスターウィンドウに貼り付ける
+        self.grid(column=0, row=0, sticky=(N, S, W, E))
         self.make_widget()
 
         self.process_dict = {}
